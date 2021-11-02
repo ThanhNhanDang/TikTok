@@ -11,59 +11,25 @@ import "../App.css";
 
 // 1. Callback luôn gọi khi component được mounted
 
-const tabs = ["posts", "comments", "photos"];
-
 function Content() {
-  const [title, setTitle] = useState("");
-  const [datas, setDatas] = useState([]);
-  const [type, setType] = useState("posts");
-  const [showGoToTop, setShowGoToTop] = useState(false);
 
-  useEffect(() => {
-    fetch(`https://jsonplaceholder.typicode.com/${type}`)
-      .then((res) => res.json())
-      .then((datas) => {
-        setDatas(datas);
-      });
-  }, [type]);
+  const [width, setWidth] = useState(window.innerWidth);
 
-  useEffect(() => {
-    const handleScroll = () => {
-   setShowGoToTop(window.scrollY >= 200);
-    };
-    window.addEventListener("scroll", handleScroll);
-
-    return ()=>{
-      window.removeEventListener("scroll", handleScroll);
+  useEffect(()=>{
+    const handleResize = ()=>{
+      setWidth(window.innerWidth);
     }
-  }, []);
 
+    window.addEventListener('resize', handleResize);
+
+
+    return()=>{
+      window.removeEventListener('resize', handleResize);
+    }
+  },[])
   return (
     <div>
-      <div className="tabs">
-        {tabs.map((tab) => (
-          <button
-            key={tab}
-            className={type === tab ? "active" : " "}
-            onClick={() => setType(tab)}
-          >
-            {tab}
-          </button>
-        ))}
-      </div>
-      <input value={title} onChange={(e) => setTitle(e.target.value)}></input>
-      <h2>Title: {title}</h2>
-      <h2>Type: {type}</h2>
-      <ul>
-        {datas.map((post) => (
-          <li key={post.id}>{post.email || post.title}</li>
-        ))}
-      </ul>
-      {showGoToTop &&(
-        <button className="goToTop">
-          Go to Top
-        </button>
-      )}
+      <h1>{width}</h1>
     </div>
   );
 }
