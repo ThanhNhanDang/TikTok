@@ -9,6 +9,13 @@ button:hover{
     background-color: white;
 }
 
+.goToTop{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    text-align: right;
+}
+
 .active{
     color: hsl(45, 100%, 99%);
     background-color: rgb(112, 111, 111);
