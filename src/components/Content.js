@@ -12,19 +12,29 @@ import "../App.css";
 // 1. Callback luôn gọi khi component được mounted
 
 function Content() {
-  const [countdown, setCountdown] = useState(180);
+  const [avatar, setAvatar] = useState();
 
   useEffect(() => {
-    const timerId = setInterval(() => {
-      setCountdown((prevState) => prevState - 1); 
-    }, 1000);
+    return () => avatar && URL.revokeObjectURL(avatar.preview);
+  }, [avatar]);
 
-    return ()=>clearInterval(timerId);
-  }, []);
+  const handlePreviewAvatar = (e) => {
+    const file = e.target.files[0];
+
+    file.preview = URL.createObjectURL(file);
+
+    setAvatar(file);
+  };
 
   return (
     <div>
-      <h1>{countdown}</h1>
+      <input
+        type="file"
+        // multiple chọn nhiều ảnh
+        onChange={handlePreviewAvatar}
+      ></input>
+
+      {avatar && <img src={avatar.preview} alt="avatar" width="80%" />}
     </div>
   );
 }
