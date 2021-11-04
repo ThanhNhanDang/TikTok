@@ -11,30 +11,49 @@ import "../App.css";
 
 // 1. Callback luôn gọi khi component được mounted
 
+const lession = [
+  {
+    id: 1,
+    name: "Bai Hoc 1",
+  },
+  {
+    id: 2,
+    name: "Bai hoc 2",
+  },
+  {
+    id: 3,
+    name: "bai hoc 3",
+  },
+];
+
 function Content() {
-  const [avatar, setAvatar] = useState();
+  const [lessionId, setLessionId] = useState(1);
 
-  useEffect(() => {
-    return () => avatar && URL.revokeObjectURL(avatar.preview);
-  }, [avatar]);
+  useEffect(()=>{
 
-  const handlePreviewAvatar = (e) => {
-    const file = e.target.files[0];
+    const handleComment = ({detail})=>{
+      console.log(detail);
+    }
 
-    file.preview = URL.createObjectURL(file);
-
-    setAvatar(file);
-  };
+    window.addEventListener(`lession-${lessionId}`, handleComment)
+    return()=>{
+      window.removeEventListener(`lession-${lessionId}`, handleComment)
+    }
+  }, [lessionId])
 
   return (
     <div>
-      <input
-        type="file"
-        // multiple chọn nhiều ảnh
-        onChange={handlePreviewAvatar}
-      ></input>
-
-      {avatar && <img src={avatar.preview} alt="avatar" width="80%" />}
+      <ul>
+        {lession.map((lession) => (
+          <li
+            key={lession.id}
+            style={{
+              color: lessionId === lession.id ? "red" : "#333",
+            }}
+            onClick={() => setLessionId(lession.id)}
+          >{lession.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }
