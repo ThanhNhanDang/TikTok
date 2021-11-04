@@ -12,21 +12,19 @@ import "../App.css";
 // 1. Callback luôn gọi khi component được mounted
 
 function Content() {
+  const [countdown, setCountdown] = useState(180);
 
-  const [width, setWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      setCountdown((prevState) => prevState - 1); 
+    }, 1000);
 
-  useEffect(()=>{
-    const handleResize = ()=>{
-      setWidth(window.innerWidth);
-    }
-    window.addEventListener('resize', handleResize);
-    return()=>{
-      window.removeEventListener('resize', handleResize);
-    }
-  },[])
+    return ()=>clearInterval(timerId);
+  }, []);
+
   return (
     <div>
-      <h1>{width}</h1>
+      <h1>{countdown}</h1>
     </div>
   );
 }
