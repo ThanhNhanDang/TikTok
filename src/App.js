@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Content from "./components/Content";
+import Content from "./components/content/Content";
 import "./App.css"
 function App() {
   const [mounted, setMounted] = useState(false);
