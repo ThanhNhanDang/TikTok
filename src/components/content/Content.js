@@ -1,25 +1,19 @@
 import React, { useEffect, useRef, useState, memo } from "react";
 import "../../App.css";
-import Video from '../video/Video'
+import Video from "../video/Video";
 
 // 1. memo() -> Higher Order Commponent (HOC)
 // 2. useCallback()
 
-function Content() {
-  
-  const [count, setCount] = useState(0);
-
-  const increase = ()=>{
-    setCount(count + 1)
-  }
+function Content({onIncrease}) {
+  console.log("re-render")
 
   return (
-    <div>
-      <h1>{count}</h1>
-    <button onClick={increase}>Click me!</button>
-    <Video/>
-    </div>
+    <>
+      <button onClick={onIncrease}>Click me!</button>
+      <Video />
+    </>
   );
 }
 
-export default Content;
+export default memo(Content);
