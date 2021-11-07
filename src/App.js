@@ -1,61 +1,44 @@
-import React, { useState, useMemo, useRef } from "react";
+import React, { useReducer } from "react";
 import "./App.css";
+// useState
+// 1. Init state: 0.
+// 2. Actions: Up (state + 1) / Down (state - 1)
+
+// useReducer
+// 1. Init state: 0.
+// 2. Actions: Up (state + 1) / Down (state - 1)
+// 3. Reducer
+// 4. Dispatch
+
+//Init state
+const initState = 0;
+
+// Actions
+const UP_ACTION = "up";
+const DOWN_ACTION = "down";
+
+// Reducer
+const reducer = (state, action) => {
+  switch (action) {
+    case UP_ACTION:
+      return state + 1;
+    case DOWN_ACTION:
+      return state - 1;
+    default:
+      throw new Error("Invalid action");
+  }
+};
+
+
+
 function App() {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [products, setProducts] = useState([]);
-
-  const nameRef = useRef();
-
-  const handleSubmit = () => {
-    setProducts([
-      ...products,
-      {
-        name,
-        price: +price, // đổi sang số
-        // hoặc Number(price)
-        // hoặc parseInt(price)
-      },
-    ]);
-
-    setName("");
-    setPrice("");
-    nameRef.current.focus()
-  };
-
-  const total = useMemo(() => {
-    const result = products.reduce((result, product) => {
-      console.log("Tính toán lại");
-      return result + product.price;
-    }, 0);
-    return result;
-  }, [products]);
+  const [count, disPatch] = useReducer(reducer, initState);
 
   return (
     <React.Fragment>
-      <input
-        value={name}
-        ref={nameRef}
-        placeholder="Enter name..."
-        onChange={(e) => setName(e.target.value)}
-      ></input>
-      <br />
-      <input
-        value={price}
-        placeholder="Enter price..."
-        onChange={(e) => setPrice(e.target.value)}
-      ></input>
-      <br />
-      <button onClick={handleSubmit}>Add</button>
-      <br />
-      Total: {total}
-      <ul>
-        {products.map((product, index) => (
-          <li key={index}>
-            {product.name} - {product.price}
-          </li>
-        ))}
-      </ul>
+      <h1>{count}</h1>
+      <button onClick={() => disPatch(DOWN_ACTION)}>Down</button>
+      <button onClick={() => disPatch(UP_ACTION)}>Up</button>
     </React.Fragment>
   );
 }
