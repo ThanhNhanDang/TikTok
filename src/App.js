@@ -1,20 +1,61 @@
-import React, { useState, useCallback } from "react";
-import Content from "./components/content/Content";
+import React, { useState, useMemo, useRef } from "react";
 import "./App.css";
 function App() {
-  const [mounted, setMounted] = useState(false);
-  const [count, setCount] = useState(0);
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [products, setProducts] = useState([]);
 
-  const handleIncrease = useCallback(() => {
-    setCount((prevCount) => prevCount + 1);
-  }, []);
+  const nameRef = useRef();
+
+  const handleSubmit = () => {
+    setProducts([
+      ...products,
+      {
+        name,
+        price: +price, // đổi sang số
+        // hoặc Number(price)
+        // hoặc parseInt(price)
+      },
+    ]);
+
+    setName("");
+    setPrice("");
+    nameRef.current.focus()
+  };
+
+  const total = useMemo(() => {
+    const result = products.reduce((result, product) => {
+      console.log("Tính toán lại");
+      return result + product.price;
+    }, 0);
+    return result;
+  }, [products]);
+
   return (
     <React.Fragment>
-      <div className="row">
-        <button onClick={() => setMounted(!mounted)}>Toggle</button>
-        {mounted && <h1>{count}</h1>}
-        {mounted && <Content onIncrease={handleIncrease} />}
-      </div>
+      <input
+        value={name}
+        ref={nameRef}
+        placeholder="Enter name..."
+        onChange={(e) => setName(e.target.value)}
+      ></input>
+      <br />
+      <input
+        value={price}
+        placeholder="Enter price..."
+        onChange={(e) => setPrice(e.target.value)}
+      ></input>
+      <br />
+      <button onClick={handleSubmit}>Add</button>
+      <br />
+      Total: {total}
+      <ul>
+        {products.map((product, index) => (
+          <li key={index}>
+            {product.name} - {product.price}
+          </li>
+        ))}
+      </ul>
     </React.Fragment>
   );
 }
