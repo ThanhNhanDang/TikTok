@@ -25,3 +25,7 @@ button:hover{
 .tabs{
     padding: 12px;  
 }
+.dark{
+    color: white;
+    background-color: #333;
+}
