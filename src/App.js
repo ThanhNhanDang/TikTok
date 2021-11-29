@@ -1,24 +1,20 @@
-import React, { useContext } from "react";
-import Content from "./components/content/Content";
-import { ThemeContext } from "./components/Theme/ThemeContext";
-
-//Context
-// CompA => CompB => CompC
-//-> CompA => CompC
-
-// Theme: Dark / Light
-
-// 1. Create context
-// 2. Provider
-// 3. Consumer
+import React from "react";
+import { useStore, actions } from "./store";
 
 function App() {
-  const context = useContext(ThemeContext);
+  const [state, dispatch] = useStore();
+  const { todos, todoInput } = state;
+  console.log('todoInput: ', todoInput);
   return (
-      <>
-        <button onClick={context.toggleTheme}>Toggle theme</button>
-        <Content />
-      </>
+    <>
+      <input 
+      value={todoInput}
+      placeholder="Enter todo.."
+      onChange = {e=>{
+        dispatch(actions.setTodoInput(e.target.value))
+      }}
+      ></input>
+    </>
   );
 }
 
